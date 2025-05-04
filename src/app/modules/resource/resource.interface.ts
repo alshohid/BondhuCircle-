@@ -12,7 +12,7 @@ export interface IResource {
   location: string;
   imageUrl?: string;
   availableFrom: Date;
-  // userId: Types.ObjectId; 
+  userId: Types.ObjectId; 
 }
 
 // Add this if you use full mongoose documents

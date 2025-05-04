@@ -8,26 +8,20 @@ const auth =
   (...requiredRoles: string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Get authorization token from request headers
-      const token = req.headers.authorization;
-
-      if (!token) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized. No token provided.');
+    
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, "You are not authorized. No token provided.");
       }
 
-      // Verify the token
-      let verifiedUser: JwtPayload; // Provide the type assertion here
-      try {
-        verifiedUser = jwt.verify(token, config.jwt.secret as Secret) as JwtPayload;
-      } catch (error) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid token.');
-      }
+      const token = authHeader.split(" ")[1];
 
-      (req as any).user = verifiedUser; // Store user details in the request for further use (e.g., user role and id)
-     console.log(requiredRoles);
-      // Check if requiredRoles are specified and user role is allowed
+      const verifiedUser = jwt.verify(token, config.jwt.secret as Secret) as JwtPayload;
+
+      (req as any).user = verifiedUser;
+
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-        throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden. You are not authorized to access this route.');
+        throw new ApiError(httpStatus.FORBIDDEN, "Forbidden. You are not authorized to access this route.");
       }
 
       next();

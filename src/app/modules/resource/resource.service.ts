@@ -8,6 +8,21 @@ const newResource =async(resourceData:IResource)=>{
         }
         return nwwResourceResult
 }
+const allResouurcCollection = async()=>{
+    const result = await ResourceModel.find()
+    if(!result){
+        throw new Error("No Resurce found")
+    }
+    return result;
+}
+const singleUserResourceData = async(userId:string)=>{
+    const result = await ResourceModel.find({ userId: userId }); 
+  if (!result || result.length === 0) {
+    throw new Error("No resources found for this user.");
+  }
+
+  return result;
+}
 export default{
-    newResource
+    newResource,allResouurcCollection,singleUserResourceData
 }
