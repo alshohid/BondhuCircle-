@@ -21,6 +21,5 @@ export interface IResourceDocument extends IResource, Document {
   updatedAt: Date;
 }
 
-// Optional: attach this to your model
 export type ResourceModel = Model<IResourceDocument>;
 
