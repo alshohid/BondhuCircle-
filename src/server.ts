@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import config from "./config/index"
 import app from "./app"
 
+
 const databaseConnection =async()=>{
     try {
         await mongoose.connect(config.database_url as string)
