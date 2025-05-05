@@ -16,7 +16,7 @@ const allResouurcCollection = async()=>{
     return result;
 }
 const singleUserResourceData = async(userId:string)=>{
-    const result = await ResourceModel.find({ userId: userId }); 
+    const result = await ResourceModel.find({ userId: userId }).populate('userId','name email'); 
   if (!result || result.length === 0) {
     throw new Error("No resources found for this user.");
   }

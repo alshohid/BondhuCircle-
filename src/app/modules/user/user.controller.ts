@@ -110,6 +110,52 @@ const refreshToken = async (
   };
   
 
+const getUserOwnProfile =async(req:Request, res:Response, next:NextFunction)=>{
+    try {
+      const user = req.user as {_id:string}
+      if(!user._id){
+        return res.status(401).json({
+          msg:'User Anauthoraize',
+          data:null
+        })
+      }
+      const userinfo = await UserService.getUserInformation(user._id) 
+      if(!userinfo){
+        return res.status(400).json({
+          msg:"User no found ",
+          data:null
+        })
+      }
+      res.status(200).json({
+        msg:"successfully user info get",
+        data:userinfo
+          
+      })
+    } catch (error) {
+      next(error)
+    }
+}
+
+const deleteUser = async(req:Request ,res:Response , next:NextFunction)=>{
+  try {
+    const {id}= req.params
+    const deleteUserResult = await UserService.deleteUser(id)
+    if(!deleteUserResult){
+      return res.status(400).json({
+        msg:"no user found delete for this id ",
+        data:null
+      })
+    }
+    res.status(200).json({
+      msg:"User Successsfully deleted ",
+      data:deleteUserResult
+    })
+    
+  } catch (error) {
+    next(error)
+  }
+
+}
 export const UserController= {
-    signup,loginUser,refreshToken
+    signup,loginUser,refreshToken,getUserOwnProfile,deleteUser
 }

@@ -28,4 +28,19 @@ const authenticateUser=async (phone:string, password:string)=>{
     return user
 
 }
-export default{usercreation,authenticateUser}
+const getUserInformation = async (userId:string)=>{
+        const result = await UserModel.findById(userId).select('name email avatarUrl phone role location')
+        if(!result){
+            throw new Error ('some thing wrong error occoured')
+        }
+        return result
+}
+const deleteUser =async (userId:string) =>{
+    const result = await UserModel.findByIdAndDelete(userId)
+    if(!result){
+        throw new Error("database error")
+    }
+   return result
+
+}
+export default{usercreation,authenticateUser,getUserInformation,deleteUser}

@@ -7,8 +7,7 @@ const ResourcePost = async (req: Request, res: Response, next: NextFunction) => 
     try {
       const resourceData = req.body;
   
-      // Ensure auth middleware added req.user
-      const user = req.user as { _id: string }; // Add type if needed
+      const user = req.user as { _id: string };
 
       if (!user?._id) {
         return res.status(401).json({ msg: "Unauthorized", data: null });
